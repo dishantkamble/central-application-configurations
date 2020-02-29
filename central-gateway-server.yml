@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: central-gateway-server
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    region: default
+    registry-fetch-interval-seconds: 5
+
+zuul:
+  routes:
+    book-application:
+      path: /book-application/**
+      sensitive-headers: Set-Cookie,Authorization
+    central-discovery-server:
+      path: /central-discovery-server/**
+      sensitive-headers: Set-Cookie,Authorization
+      url: http://localhost:8761
+
+hystrix:
+  command:
+    book-application:
+      execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 600000
+    central-discovery-server:
+      execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 600000
